@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- HOME -->
+    <LinearLayout
+        android:id="@+id/homeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Card Scanner"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="40dp"
+            android:text="Scan a visiting card and save it to your contacts"
+            android:gravity="center" />
+
+        <Button
+            android:id="@+id/btnScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scan with camera" />
+
+        <Button
+            android:id="@+id/btnGallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Pick from gallery" />
+    </LinearLayout>
+
+    <!-- EDITOR: top half photo, bottom half form -->
+    <LinearLayout
+        android:id="@+id/editorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#000000">
+
+            <ImageView
+                android:id="@+id/cardImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:contentDescription="Scanned card" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <EditText android:id="@+id/etName" style="@style/Field" android:hint="Full name" android:inputType="textPersonName|textCapWords" />
+                    <EditText android:id="@+id/etCompany" style="@style/Field" android:hint="Company" android:inputType="textCapWords" />
+                    <EditText android:id="@+id/etTitle" style="@style/Field" android:hint="Job title" android:inputType="textCapWords" />
+                    <EditText android:id="@+id/etPhone" style="@style/Field" android:hint="Phone" android:inputType="phone" />
+                    <EditText android:id="@+id/etPhone2" style="@style/Field" android:hint="Phone 2 (optional)" android:inputType="phone" />
+                    <EditText android:id="@+id/etEmail" style="@style/Field" android:hint="Email" android:inputType="textEmailAddress" />
+                    <EditText android:id="@+id/etWebsite" style="@style/Field" android:hint="Website" android:inputType="textUri" />
+                    <EditText android:id="@+id/etAddress" style="@style/Field" android:hint="Address" android:inputType="textMultiLine|textCapSentences" />
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <Button
+                    android:id="@+id/btnBack"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:text="Rescan" />
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_marginStart="4dp"
+                    android:text="Save to contacts" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
