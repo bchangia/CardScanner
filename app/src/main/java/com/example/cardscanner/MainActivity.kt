@@ -107,8 +107,9 @@ class MainActivity : AppCompatActivity() {
     private fun launchCamera() {
         val dir = File(cacheDir, "images").apply { mkdirs() }
         val file = File(dir, "card_${System.currentTimeMillis()}.jpg")
-        photoUri = FileProvider.getUriForFile(this, "$packageName.fileprovider", file)
-        takePicture.launch(photoUri)
+        val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", file)
+        photoUri = uri
+        takePicture.launch(uri)
     }
 
     // ---------- OCR ----------

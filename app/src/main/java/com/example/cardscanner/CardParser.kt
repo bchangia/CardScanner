@@ -14,7 +14,7 @@ data class CardInfo(
 /** Heuristic parser that turns raw OCR text from a business card into fields. */
 object CardParser {
     private val emailRe = Regex("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
-    private val phoneRe = Regex("(\\+?\\d[\\d\\s().-]{7,}\\d)")
+    private val phoneRe = Regex("(\\+?\\(?\\d[\\d\\s().-]{7,}\\d)")
     private val webRe = Regex(
         "((https?://|www\\.)\\S+)|(\\b[a-z0-9-]+\\.(com|in|net|org|io|co|biz|info)\\b(/\\S*)?)",
         RegexOption.IGNORE_CASE
@@ -34,6 +34,15 @@ object CardParser {
         "road", "rd.", "street", "st.", "nagar", "floor", "sector", "lane", "avenue", "plaza",
         "building", "block", "near", "opp", "india", "pin", "dist", "colony", "market", "tower"
     )
+
+    // Whole-word matching so "Prince" doesn't match "inc" or "Headway" match "head".
+    private fun wordRegex(words: List<String>) = Regex(
+        words.joinToString("|", "(?<![a-z])(?:", ")(?![a-z])") { Regex.escape(it) },
+        RegexOption.IGNORE_CASE
+    )
+    private val titleRe = wordRegex(titleWords)
+    private val companyRe = wordRegex(companyWords)
+    private val addressRe = wordRegex(addressWords)
 
     fun parse(raw: String): CardInfo {
         val card = CardInfo()
@@ -76,7 +85,7 @@ object CardParser {
         // Title
         lines.forEachIndexed { i, l ->
             if (!used[i] && card.title.isEmpty() &&
-                titleWords.any { l.lowercase().contains(it) }) {
+                titleRe.containsMatchIn(l)) {
                 card.title = l; used[i] = true
             }
         }
@@ -84,7 +93,7 @@ object CardParser {
         // Company
         lines.forEachIndexed { i, l ->
             if (!used[i] && card.company.isEmpty() &&
-                companyWords.any { l.lowercase().contains(it) }) {
+                companyRe.containsMatchIn(l)) {
                 card.company = l; used[i] = true
             }
         }
@@ -107,7 +116,7 @@ object CardParser {
         val addr = mutableListOf<String>()
         lines.forEachIndexed { i, l ->
             if (!used[i] && (l.any { it.isDigit() } ||
-                    addressWords.any { l.lowercase().contains(it) })) {
+                    addressRe.containsMatchIn(l))) {
                 addr.add(l); used[i] = true
             }
         }
